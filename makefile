@@ -1,5 +1,6 @@
 CXX			:= avr-g++
 CXXFLAGS	:= -std=c++20 -O2 -Wall -Wextra -pedantic -Weffc++ -I/usr/avr/include
+DEFS		:= -DF_CPU=16000000UL
 
 SRCDIR	:= src
 BINDIR	:= bin
@@ -14,7 +15,7 @@ $(TARGET): $(OBJ)
 	$(CXX) -o $@ $^
 
 $(BINDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) $(DEFS) -c -o $@ $<
 
 $(BINDIR):
 	mkdir -p $@
