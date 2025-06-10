@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+BINDIR="bin"
+
+avr-objcopy -O ihex "$BINDIR/$1" "$BINDIR/$1.hex"
+avrdude -p atmega328p -c usbasp -P usb -b 19200 -U "flash:w:$BINDIR/$1.hex"

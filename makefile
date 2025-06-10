@@ -1,21 +1,17 @@
-CXX			:= avr-g++
-CXXFLAGS	:= -std=c++20 -O2 -Wall -Wextra -pedantic -Weffc++ -I/usr/avr/include
-DEFS		:= -DF_CPU=16000000UL
+CXX				:= avr-g++
+CXXFLAGS	:= -std=c++20 -O2 -Wall -Wextra -pedantic -Weffc++ -I/usr/avr/include -I./include
+DEFS			:= -DF_CPU=16000000UL
 
 SRCDIR	:= src
 BINDIR	:= bin
 
-SRC 	:= $(SRCDIR)/blink.cpp
-OBJ 	:= $(patsubst $(SRCDIR)/%.cpp,$(BINDIR)/%.o,$(SRC))
-TARGET 	:= $(BINDIR)/blink
+SRC 		:= $(wildcard $(SRCDIR)/*.cpp)
+TARGETS := $(patsubst $(SRCDIR)/%.cpp,$(BINDIR)/%,$(SRC))
 
-all: $(BINDIR) $(TARGET)
+all: $(BINDIR) $(TARGETS)
 
-$(TARGET): $(OBJ)
-	$(CXX) -o $@ $^
-
-$(BINDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(DEFS) -c -o $@ $<
+$(BINDIR)/%: $(SRCDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(DEFS) -o $@ $<
 
 $(BINDIR):
 	mkdir -p $@
